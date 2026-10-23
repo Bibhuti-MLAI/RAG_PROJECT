@@ -1,0 +1,57 @@
+Retailer Agreement 1
+
+This Agreement is made and entered into as of January 1, 2025, by and between MedPharma Inc., a company organized and existing under the laws of California with its principal place of business at 123 Pharma Lane, Los Angeles, CA ("Company"), and HealthPlus Distributors LLC, a company organized and existing under the laws of Texas with its principal place of business at 789 Wellness Ave, Dallas, TX ("Distributor").
+
+1. Appointment:
+1.1 Company appoints Distributor as a retailer of its pharmaceutical products in the territory of Texas.
+1.2 Distributor agrees to purchase and sell the Products in Texas, subject to this Agreement.
+
+2. Products:
+2.1 Products include prescription and over-the-counter medicines listed in Exhibit A.
+2.2 Company may add or remove products with reasonable notice to Distributor.
+
+3. Territory:
+3.1 Distributor shall only sell Products in Texas.
+3.2 Distributor shall not sell Products outside Texas without prior written consent from Company.
+
+4. Purchase and Sale:
+4.1 Distributor purchases Products at prices set forth in Exhibit B.
+4.2 Company ships Products per Exhibit B.
+4.3 Distributor handles storage, handling, and distribution.
+
+5. Pricing and Payment:
+5.1 Pricing is in Exhibit B.
+5.2 Payment terms follow Exhibit B.
+
+6. Term and Termination:
+6.1 Agreement term is 2 years unless terminated earlier.
+6.2 Either party may terminate with 30 days' written notice.
+6.3 Company may terminate immediately if Distributor breaches material provisions.
+
+7. Confidentiality:
+7.1 Distributor must keep Company information confidential.
+
+8. Compliance with Laws:
+8.1 Distributor complies with pharmaceutical laws.
+
+9. Warranty and Liability:
+9.1 Company warrants Products free from material defects for 90 days from shipment.
+9.2 Liability is limited to the purchase price of Products.
+
+10. Entire Agreement:
+10.1 This Agreement supersedes prior communications.
+
+11. Governing Law:
+11.1 Governed by California law.
+
+Signed,
+MedPharma Inc.
+By: John Doe, CEO
+HealthPlus Distributors LLC
+By: Jane Smith, Director
+
+Exhibit A: Products
+[List of Products]
+
+Exhibit B: Pricing and Terms
+[Pricing and Payment Terms]

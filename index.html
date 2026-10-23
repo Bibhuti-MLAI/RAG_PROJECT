@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Document Assistant with OCR</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e8f5e9;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        @keyframes ping {
+            75%, 100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+        
+        .animate-ping {
+            animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        .container-fluid {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+        .header {
+            background-color: #00897b;
+            padding: 15px;
+            border-radius: 0;
+            margin-bottom: 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .content-area {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        .document-sidebar {
+            width: 350px;
+            background-color: #f1f8e9;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #c8e6c9;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background-color: #f1f8e9;
+            margin-bottom: 0;
+        }
+        .input-container {
+            padding: 15px;
+            background-color: #c8e6c9;
+            border-top: 1px solid #81c784;
+        }
+        .doc-list {
+            flex: 1;
+            overflow-y: auto;
+            background-color: #f1f8e9;
+            padding: 10px;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 75%;
+            position: relative;
+        }
+        .user-message {
+            background-color: #81c784;
+            color: #1b5e20;
+            align-self: flex-end;
+            margin-left: auto;
+            box-shadow: 0 2px 5px rgba(27, 94, 32, 0.2);
+        }
+        .assistant-message {
+            background-color: #a5d6a7;
+            color: #1b5e20;
+            align-self: flex-start;
+            box-shadow: 0 2px 5px rgba(27, 94, 32, 0.2);
+        }
+        .document-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid #c8e6c9;
+        }
+        .document-item:hover {
+            background-color: #dcedc8;
+        }
+        .document-item.converted-doc {
+            background-color: #e1f5fe;
+        }
+        .btn-delete {
+            color: #e53935;
+            cursor: pointer;
+        }
+        .session-info {
+            background-color: #c8e6c9;
+            padding: 10px;
+            margin-bottom: 0;
+            border-bottom: 1px solid #81c784;
+        }
+        .flex {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #1b5e20;
+        }
+        .document-controls {
+            padding: 10px;
+            border-bottom: 1px solid #c8e6c9;
+        }
+        
+        .ocr-status {
+            background-color: #e8f5e9;
+            padding: 8px;
+            border-bottom: 1px solid #c8e6c9;
+            font-size: 12px;
+        }
+        .ocr-available {
+            color: #2e7d32;
+        }
+        .ocr-unavailable {
+            color: #d32f2f;
+        }
+        
+        .wave-thinking {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px;
+        }
+        .wave-thinking span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #1b5e20;
+        }
+        @keyframes waveAnim {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+        .wave-thinking span:nth-child(1) {
+            animation: waveAnim 1.3s ease-in-out infinite;
+        }
+        .wave-thinking span:nth-child(2) {
+            animation: waveAnim 1.3s ease-in-out infinite;
+            animation-delay: -1.1s;
+        }
+        .wave-thinking span:nth-child(3) {
+            animation: waveAnim 1.3s ease-in-out infinite;
+            animation-delay: -0.9s;
+        }
+        
+        .mic-btn {
+            background-color: #388e3c;
+            border-color: #2e7d32;
+            color: white;
+        }
+        .mic-btn.recording {
+            background-color: #e74c3c;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        #speechStatus {
+            font-size: 12px;
+            font-style: italic;
+            margin-top: 5px;
+            padding: 0 10px;
+            color: #1b5e20;
+        }
+        
+        .file-type-indicator {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 5px;
+        }
+        .file-type-txt-converted {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        .file-type-pdf {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+        .file-type-doc {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        .file-type-txt {
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="header text-center">
+            <img src="/static/logo.png" alt="Logo" style="width: 55px; border: 2px" onerror="this.style.display='none'"/>
+            <h1 style="color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.2); font-weight: bold; margin: 0;">Legal Document Assistant</h1>
+            <p style="color: white; margin-top: 5px; font-size: 14px; margin-bottom: 0;">Powered by ADA AI with OCR - Images converted to text</p>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <!-- Document Sidebar (Left Side) -->
+            <div class="document-sidebar">
+                <!-- Session information -->
+                <div class="session-info">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">Conversation Session</h6>
+                        <button id="clearSessionBtn" class="btn btn-outline-success btn-sm" style="border-color: #4caf50; color: #2e7d32;">Clear</button>
+                    </div>
+                    <div class="mt-1">
+                        <small>Session ID: <span id="sessionId">Loading...</span></small>
+                        <div id="sessionStatus" class="mt-1 text-muted small"></div>
+                    </div>
+                </div>
+                
+                <!-- OCR Status -->
+                <div class="ocr-status" id="ocrStatus">
+                    <i class="bi bi-gear"></i> Checking OCR status...
+                </div>
+                
+                <!-- Document Upload Controls -->
+                <div class="document-controls">
+                    <h6 class="mb-2">Upload Documents</h6>
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <div class="mb-2">
+                            <input type="file" class="form-control form-control-sm" id="documentFile" accept=".pdf,.txt,.csv,.docx,.png,.jpg,.jpeg,.tiff,.tif,.bmp,.gif">
+                            <div class="form-text small" id="supportedFormats">Supported: PDF, TXT, CSV, DOCX, Images</div>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-sm" style="background-color: #388e3c; border-color: #2e7d32;">Upload</button>
+                    </form>
+                </div>
+                
+                <!-- Document List Header -->
+                <div class="document-controls d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">Documents</h6>
+                    <button id="refreshDocsBtn" class="btn btn-sm btn-outline-success" style="border-color: #4caf50; color: #2e7d32;">Refresh</button>
+                </div>
+                
+                <!-- Document List -->
+                <div id="documentList" class="doc-list">
+                    <p class="text-center py-5 text-gray-500">Loading documents...</p>
+                </div>
+            </div>
+            
+            <!-- Main Chat Area -->
+            <div class="main-content">
+                <!-- Chat Messages Display -->
+                <div class="chat-area" id="chatArea">
+                    <div class="assistant-message message">
+                        Hello! I'm your legal document assistant with OCR support. Upload images and I'll automatically convert them to text files for analysis. How can I help you today?
+                    </div>
+                </div>
+                
+                <!-- Input Area (Bottom) -->
+                <div class="input-container">
+                    <div class="input-group">
+                        <input type="text" id="userInput" class="form-control" placeholder="Ask a question about your legal documents...">
+                        <button class="btn mic-btn" id="micBtn" title="Voice input">
+                            <i class="bi bi-mic"></i>
+                        </button>
+                        <button class="btn btn-success" id="sendBtn" style="background-color: #388e3c; border-color: #2e7d32;">Send</button>
+                    </div>
+                    <div id="speechStatus"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const chatArea = document.getElementById('chatArea');
+        const uploadForm = document.getElementById('uploadForm');
+        const documentList = document.getElementById('documentList');
+        const refreshDocsBtn = document.getElementById('refreshDocsBtn');
+        const sessionIdElement = document.getElementById('sessionId');
+        const sessionStatusElement = document.getElementById('sessionStatus');
+        const clearSessionBtn = document.getElementById('clearSessionBtn');
+        const micBtn = document.getElementById('micBtn');
+        const speechStatus = document.getElementById('speechStatus');
+        const ocrStatus = document.getElementById('ocrStatus');
+        const supportedFormats = document.getElementById('supportedFormats');
+        
+        // Store current session ID
+        let currentSessionId = '';
+        let ocrAvailable = false;
+        
+        // API Base URL - Update this to match your backend
+        const API_BASE = window.location.origin; // Assumes backend runs on same domain
+
+        // Escape text before putting it into HTML, so file names, document
+        // text or LLM answers can never inject markup or scripts into the page.
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = String(text ?? '');
+            return div.innerHTML;
+        }
+
+        // Read the error message from a failed API response ({"detail": ...}).
+        async function errorMessage(response) {
+            const data = await response.json().catch(() => ({}));
+            return data.detail || data.message || `HTTP ${response.status}`;
+        }
+
+        // Speech recognition setup
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
+        let isRecording = false;
+        
+        // Check if speech recognition is supported
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            recognition.maxAlternatives = 1;
+            recognition.lang = 'en-US';
+            
+            recognition.onstart = () => {
+                isRecording = true;
+                micBtn.classList.add('recording');
+                speechStatus.textContent = 'Listening...';
+            };
+            
+            recognition.onresult = (event) => {
+                let finalTranscript = '';
+                let interimTranscript = '';
+                
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript;
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+                
+                if (interimTranscript) {
+                    speechStatus.textContent = interimTranscript;
+                }
+                
+                if (finalTranscript) {
+                    userInput.value = finalTranscript;
+                    speechStatus.textContent = 'Voice input received: ' + finalTranscript;
+                }
+            };
+            
+            recognition.onend = () => {
+                isRecording = false;
+                micBtn.classList.remove('recording');
+                setTimeout(() => {
+                    if (!isRecording) {
+                        speechStatus.textContent = '';
+                    }
+                }, 3000);
+            };
+            
+            recognition.onerror = (event) => {
+                isRecording = false;
+                micBtn.classList.remove('recording');
+                speechStatus.textContent = 'Error: ' + event.error;
+                setTimeout(() => {
+                    speechStatus.textContent = '';
+                }, 3000);
+            };
+            
+            micBtn.addEventListener('click', () => {
+                if (isRecording) {
+                    recognition.stop();
+                } else {
+                    userInput.value = '';
+                    speechStatus.textContent = 'Click "Stop" when finished speaking...';
+                    recognition.start();
+                }
+            });
+        } else {
+            micBtn.disabled = true;
+            micBtn.title = 'Speech recognition not supported in this browser';
+            micBtn.style.opacity = 0.5;
+            speechStatus.textContent = 'Speech recognition not supported. Please use Chrome or Edge.';
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadOCRStatus();
+            loadDocuments();
+            loadSessionInfo();
+        });
+        
+        // Load OCR status from backend
+        async function loadOCRStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/api/ocr-status`);
+                if (response.ok) {
+                    const data = await response.json();
+                    ocrAvailable = data.ocr_available;
+                    
+                    if (ocrAvailable) {
+                        ocrStatus.innerHTML = '<i class="bi bi-camera"></i> <span class="ocr-available">OCR Available - Images → Text files</span>';
+                        supportedFormats.textContent = 'Supported: PDF, TXT, CSV, DOCX, Images (automatically converted to text)';
+                    } else {
+                        ocrStatus.innerHTML = '<i class="bi bi-exclamation-triangle"></i> <span class="ocr-unavailable">OCR Unavailable - Images not supported</span>';
+                        ocrStatus.title = data.message || '';  // hover to see why (e.g. Tesseract not installed)
+                        supportedFormats.textContent = 'Supported: PDF, TXT, CSV, DOCX (Images require OCR setup)';
+                    }
+                } else {
+                    throw new Error('Failed to fetch OCR status');
+                }
+            } catch (error) {
+                console.error('Error loading OCR status:', error);
+                ocrStatus.innerHTML = '<i class="bi bi-exclamation-triangle"></i> <span class="ocr-unavailable">OCR Status Unknown - Check backend connection</span>';
+            }
+        }
+        
+        // Get file type indicator
+        function getFileTypeIndicator(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            
+            if (filename.includes('_extracted.txt')) {
+                return '<span class="file-type-indicator file-type-txt-converted">IMG→TXT</span>';
+            } else if (ext === 'pdf') {
+                return '<span class="file-type-indicator file-type-pdf">PDF</span>';
+            } else if (ext === 'docx') {
+                return '<span class="file-type-indicator file-type-doc">DOC</span>';
+            } else if (ext === 'txt') {
+                return '<span class="file-type-indicator file-type-txt">TXT</span>';
+            }
+            return '';
+        }
+        
+        // Check if file is a converted text file from image
+        function isConvertedTextFile(filename) {
+            return filename.includes('_extracted.txt');
+        }
+        
+        // Get current session info from backend
+        async function loadSessionInfo() {
+            try {
+                const response = await fetch(`${API_BASE}/api/session/current`);
+                if (response.ok) {
+                    const data = await response.json();
+                    currentSessionId = data.session_id;
+                    sessionIdElement.textContent = data.session_id;
+                    
+                    if (data.exists) {
+                        sessionStatusElement.textContent = `Active conversation with ${data.message_count} messages`;
+                    } else {
+                        sessionStatusElement.textContent = 'New conversation started';
+                    }
+                } else {
+                    throw new Error('Failed to load session info');
+                }
+            } catch (error) {
+                console.error('Error loading session info:', error);
+                currentSessionId = 'session_' + Date.now();
+                sessionIdElement.textContent = currentSessionId;
+                sessionStatusElement.textContent = 'Session created locally';
+            }
+        }
+        
+        // Clear current session
+        clearSessionBtn.addEventListener('click', async () => {
+            if (confirm('Are you sure you want to clear this conversation?')) {
+                try {
+                    // The server identifies the session from the cookie, so no body is needed.
+                    const response = await fetch(`${API_BASE}/api/session/clear`, { method: 'POST' });
+                    
+                    if (response.ok) {
+                        // Clear chat area except for the welcome message
+                        while (chatArea.children.length > 1) {
+                            chatArea.removeChild(chatArea.lastChild);
+                        }
+                        
+                        // Reload session info
+                        loadSessionInfo();
+                    } else {
+                        throw new Error('Failed to clear session');
+                    }
+                } catch (error) {
+                    console.error('Error clearing session:', error);
+                    alert('Failed to clear conversation');
+                }
+            }
+        });
+
+        // Load documents from backend
+        async function loadDocuments() {
+            try {
+                const response = await fetch(`${API_BASE}/api/documents`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch documents');
+                }
+                
+                const documents = await response.json();
+                
+                if (documents.length === 0) {
+                    documentList.innerHTML = '<div class="p-3 text-center text-muted">No documents uploaded yet</div>';
+                    return;
+                }
+                
+                documentList.innerHTML = '';
+                documents.forEach(filename => {
+                    const isConverted = isConvertedTextFile(filename);
+
+                    const item = document.createElement('div');
+                    item.className = isConverted ? 'document-item converted-doc' : 'document-item';
+                    // File name is escaped; the type badge is our own fixed HTML.
+                    item.innerHTML = `
+                        <div>
+                            ${escapeHtml(filename)}${getFileTypeIndicator(filename)}
+                            ${isConverted ? '<br><small class="text-muted">Converted from image using OCR</small>' : ''}
+                        </div>
+                        <button class="btn btn-sm btn-delete"><i class="bi bi-trash"></i> Delete</button>
+                    `;
+                    // Attach the handler directly (not via an onclick string),
+                    // so names containing quotes like "Client's.pdf" still work.
+                    item.querySelector('button').addEventListener('click', () => deleteDocument(filename));
+                    documentList.appendChild(item);
+                });
+            } catch (error) {
+                console.error('Error loading documents:', error);
+                documentList.innerHTML = '<div class="p-3 text-center text-danger">Error loading documents - Check backend connection</div>';
+            }
+        }
+        
+        // Delete document via backend
+        async function deleteDocument(filename) {
+            if (confirm(`Are you sure you want to delete ${filename}?`)) {
+                try {
+                    const response = await fetch(`${API_BASE}/api/documents/${encodeURIComponent(filename)}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(result.message || 'Document deleted successfully');
+                        loadDocuments();
+                    } else {
+                        alert(`Failed to delete document: ${await errorMessage(response)}`);
+                    }
+                } catch (error) {
+                    console.error('Error deleting document:', error);
+                    alert('Failed to delete document - Check backend connection');
+                }
+            }
+        }
+        
+        // Handle document upload to backend
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('documentFile');
+            if (!fileInput.files.length) {
+                alert('Please select a file to upload');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const isImage = ['png', 'jpg', 'jpeg', 'tiff', 'tif', 'bmp', 'gif'].includes(
+                file.name.split('.').pop().toLowerCase()
+            );
+            
+            // Check if OCR is needed but not available
+            if (isImage && !ocrAvailable) {
+                if (!confirm('This is an image file, but OCR is not available. The upload may fail. Continue anyway?')) {
+                    return;
+                }
+            }
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            let response;
+            try {
+                response = await fetch(`${API_BASE}/api/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+            } catch (error) {
+                console.error('Error uploading document:', error);
+                alert('Failed to upload document - Check backend connection');
+                return;
+            }
+
+            // Show the server's real reason (unsupported type, already exists, OCR failed, ...)
+            if (!response.ok) {
+                alert(`Upload failed: ${await errorMessage(response)}`);
+                return;
+            }
+
+            const result = await response.json();
+            let message = result.message;
+            if (result.converted_from_image) {
+                message += `\nImage converted to text file: ${result.processed_file}`;
+            }
+            alert(message);
+            loadDocuments();
+            fileInput.value = '';
+        });
+        
+        // Refresh document list
+        refreshDocsBtn.addEventListener('click', loadDocuments);
+        
+        // Show typing indicator
+        function showTypingIndicator() {
+            hideTypingIndicator();
+            
+            const thinkingDiv = document.createElement('div');
+            thinkingDiv.className = 'assistant-message message';
+            thinkingDiv.id = 'thinking-indicator';
+            thinkingDiv.innerHTML = `
+                <div class="wave-thinking">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            `;
+            
+            chatArea.appendChild(thinkingDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+        
+        // Hide typing indicator
+        function hideTypingIndicator() {
+            const existingIndicator = document.getElementById('thinking-indicator');
+            if (existingIndicator) {
+                existingIndicator.remove();
+            }
+        }
+        
+        // Send user question to backend
+        async function sendQuestion() {
+            const question = userInput.value.trim();
+            if (!question) return;
+            
+            // Stop recording if active
+            if (isRecording && recognition) {
+                recognition.stop();
+            }
+            
+            // Add user message to chat
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'user-message message';
+            userMessageDiv.textContent = question;
+            chatArea.appendChild(userMessageDiv);
+            
+            // Clear input
+            userInput.value = '';
+            speechStatus.textContent = '';
+            
+            // Scroll to bottom
+            chatArea.scrollTop = chatArea.scrollHeight;
+            
+            try {
+                // Show thinking indicator
+                showTypingIndicator();
+                
+                const response = await fetch(`${API_BASE}/api/query`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    // The session is tracked by the cookie the server sets.
+                    body: JSON.stringify({ question: question })
+                });
+                
+                // Hide typing indicator
+                hideTypingIndicator();
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Update session ID if it changed
+                    if (data.session_id) {
+                        currentSessionId = data.session_id;
+                        sessionIdElement.textContent = data.session_id;
+                    }
+                    
+                    // Create assistant message
+                    const assistantMessageDiv = document.createElement('div');
+                    assistantMessageDiv.className = 'assistant-message message';
+                    
+                    // Format the answer text with paragraphs (escaped, so the
+                    // answer is always shown as text, never run as HTML)
+                    let formattedAnswer = data.answer.split('\n')
+                        .map(para => para.trim())
+                        .filter(para => para.length > 0)
+                        .map(para => `<p>${escapeHtml(para)}</p>`)
+                        .join('');
+
+                    // List the documents the answer was based on
+                    if (data.sources && data.sources.length) {
+                        const names = data.sources.map(s => escapeHtml(s.source)).join(', ');
+                        formattedAnswer += `<p class="text-muted small mb-0"><i class="bi bi-file-earmark-text"></i> Sources searched: ${names}</p>`;
+                    }
+
+                    assistantMessageDiv.innerHTML = formattedAnswer;
+                    chatArea.appendChild(assistantMessageDiv);
+                    
+                    // Refresh session info
+                    loadSessionInfo();
+                } else {
+                    // Handle error response
+                    const errorMessageDiv = document.createElement('div');
+                    errorMessageDiv.className = 'assistant-message message';
+                    errorMessageDiv.innerHTML = `<p>Error: ${escapeHtml(await errorMessage(response))}</p>`;
+                    chatArea.appendChild(errorMessageDiv);
+                }
+                
+                // Scroll to bottom
+                chatArea.scrollTop = chatArea.scrollHeight;
+            } catch (error) {
+                console.error('Error sending question:', error);
+                
+                // Hide typing indicator
+                hideTypingIndicator();
+                
+                // Display error message
+                const errorMessageDiv = document.createElement('div');
+                errorMessageDiv.className = 'assistant-message message';
+                errorMessageDiv.innerHTML = '<p>Sorry, there was an error processing your request. Please check your backend connection and try again.</p>';
+                chatArea.appendChild(errorMessageDiv);
+                
+                // Scroll to bottom
+                chatArea.scrollTop = chatArea.scrollHeight;
+            }
+        }
+        
+        // Send button click
+        sendBtn.addEventListener('click', sendQuestion);
+        
+        // Enter key in input
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendQuestion();
+            }
+        });
+    </script>
+</body>
+</html>

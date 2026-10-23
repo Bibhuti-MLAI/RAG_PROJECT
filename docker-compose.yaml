@@ -1,0 +1,26 @@
+# Run with:  docker compose up --build -d
+# (always use --build after changing code, otherwise Docker reuses the old image)
+# Then open http://localhost:8000
+services:
+  legal-rag-ocr:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    # TOGETHER_API_KEY (and optional TOGETHER_MODEL) are read from my.env,
+    # so the key is never written into this file or into the image.
+    env_file:
+      - my.env
+    # Keep documents and the vector database on the host, so they survive
+    # container rebuilds.
+    volumes:
+      - ./legal_documents:/app/legal_documents
+      - ./legal_vectordb:/app/legal_vectordb
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/test"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s

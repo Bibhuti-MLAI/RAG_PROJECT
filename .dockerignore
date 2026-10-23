@@ -1,0 +1,10 @@
+# Keep secrets, local data and backups out of the Docker build
+my.env
+.env
+_backup_original/
+legal_vectordb/
+legal_documents/
+__pycache__/
+*.pyc
+Python Files/
+image.png

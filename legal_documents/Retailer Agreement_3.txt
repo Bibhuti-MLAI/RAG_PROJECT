@@ -1,0 +1,76 @@
+Retailer Agreement 3
+
+This Agreement is made and entered into as of March 15, 2025, by and between Zenovia Pharmaceuticals Ltd., a company incorporated under the Companies Act, 2013 with its registered office at 42 Andheri Industrial Estate, Mumbai, Maharashtra 400053, India ("Company"), and CarePoint Retail Pharmacies Pvt. Ltd., a company incorporated under the Companies Act, 2013 with its registered office at 18 MG Road, Bengaluru, Karnataka 560001, India ("Retailer").
+
+1. Appointment:
+1.1 Company appoints Retailer as a non-exclusive retailer of its pharmaceutical products in the territory of Karnataka.
+1.2 Retailer agrees to purchase and sell the Products through its licensed retail pharmacy outlets in Karnataka, subject to this Agreement.
+
+2. Products:
+2.1 Products include prescription medicines, over-the-counter medicines and diabetes care products listed in Exhibit A.
+2.2 Company may add or remove products with 45 days' written notice to Retailer.
+
+3. Territory:
+3.1 Retailer shall only sell Products in Karnataka.
+3.2 Retailer shall not sell Products outside Karnataka, including through online channels, without prior written consent from Company.
+
+4. Purchase and Sale:
+4.1 Retailer purchases Products at prices set forth in Exhibit B.
+4.2 Company ships Products within 5 business days of receiving a purchase order.
+4.3 Retailer shall store Products at the temperatures stated on the label; cold-chain Products must be stored between 2°C and 8°C.
+4.4 Minimum order value is INR 50,000 per purchase order.
+
+5. Pricing and Payment:
+5.1 Pricing is in Exhibit B.
+5.2 Payment shall be made within 45 days of invoice receipt.
+5.3 Late payments attract interest at 1.5% per month on the outstanding amount.
+5.4 Retailer receives a 2% discount for payment made within 10 days of invoice receipt.
+
+6. Term and Termination:
+6.1 Agreement term is 3 years unless terminated earlier.
+6.2 Either party may terminate with 60 days' written notice.
+6.3 Company may terminate immediately if Retailer's drug license is suspended or cancelled, or if Retailer breaches material provisions.
+6.4 On termination, Company shall buy back unexpired, undamaged Products at 90% of the invoice price.
+
+7. Confidentiality:
+7.1 Retailer must keep Company pricing and business information confidential during the term and for 2 years after termination.
+
+8. Compliance with Laws:
+8.1 Retailer shall comply with the Drugs and Cosmetics Act, 1940 and all applicable pharmacy regulations.
+8.2 Prescription medicines shall be dispensed only against a valid prescription from a registered medical practitioner.
+
+9. Returns and Expiry:
+9.1 Retailer may return Products expiring within 90 days for full credit.
+9.2 Damaged Products must be reported within 7 days of delivery.
+
+10. Warranty and Liability:
+10.1 Company warrants Products free from material defects until the expiry date printed on the pack.
+10.2 Liability is limited to the purchase price of the affected Products.
+
+11. Entire Agreement:
+11.1 This Agreement supersedes prior communications.
+
+12. Governing Law and Disputes:
+12.1 Governed by the laws of India.
+12.2 Disputes shall be settled by arbitration in Mumbai under the Arbitration and Conciliation Act, 1996.
+
+Signed,
+Zenovia Pharmaceuticals Ltd.
+By: Arjun Mehta, Managing Director
+CarePoint Retail Pharmacies Pvt. Ltd.
+By: Kavya Rao, Chief Operating Officer
+
+Exhibit A: Products
+- Metformin 500 mg tablets (strip of 10)
+- Atorvastatin 10 mg tablets (strip of 10)
+- Paracetamol 650 mg tablets (strip of 15)
+- Insulin Glargine 100 IU/ml pen (cold-chain)
+- Blood glucose test strips (pack of 50)
+
+Exhibit B: Pricing and Terms
+- Metformin 500 mg: INR 18 per strip
+- Atorvastatin 10 mg: INR 42 per strip
+- Paracetamol 650 mg: INR 25 per strip
+- Insulin Glargine pen: INR 610 per pen
+- Glucose test strips: INR 720 per pack
+- Payment: 45 days from invoice; 2% early-payment discount within 10 days

@@ -1,0 +1,73 @@
+Retailer Agreement 4
+
+This Agreement is made and entered into as of June 1, 2025, by and between Aurelix Biotech Inc., a company organized and existing under the laws of New Jersey with its principal place of business at 250 Meridian Parkway, Princeton, NJ ("Company"), and NorthStar Pharmacy Distributors LLC, a company organized and existing under the laws of Florida with its principal place of business at 77 Bayview Drive, Miami, FL ("Distributor").
+
+1. Appointment:
+1.1 Company appoints Distributor as the exclusive retailer of its pharmaceutical products in the territory of Florida.
+1.2 Distributor agrees to purchase and sell the Products in Florida, subject to this Agreement.
+
+2. Products:
+2.1 Products include prescription antibiotics, respiratory care medicines and vaccines listed in Exhibit A.
+2.2 Company may add or remove products with 30 days' written notice to Distributor.
+
+3. Territory:
+3.1 Distributor shall only sell Products in Florida.
+3.2 Distributor shall not sell Products outside Florida without prior written consent from Company.
+3.3 Company shall not appoint any other retailer for the Products in Florida during the term.
+
+4. Purchase and Sale:
+4.1 Distributor purchases Products at prices set forth in Exhibit B.
+4.2 Company ships Products FOB Princeton, NJ within 7 business days of receiving a purchase order.
+4.3 Distributor handles storage, handling, and distribution; vaccines must be kept in a monitored cold chain at 2°C to 8°C.
+4.4 Distributor shall purchase Products worth at least USD 500,000 in each contract year.
+
+5. Pricing and Payment:
+5.1 Pricing is in Exhibit B.
+5.2 Payment shall be made within 60 days of invoice receipt.
+5.3 Late payments accrue interest at 1% per month.
+5.4 Company may revise prices once per year with 60 days' written notice.
+
+6. Term and Termination:
+6.1 Agreement term is 5 years unless terminated earlier, and renews automatically for 1-year periods unless either party gives notice of non-renewal.
+6.2 Either party may terminate with 90 days' written notice.
+6.3 Company may terminate immediately if Distributor breaches material provisions or fails to meet the minimum purchase requirement in Section 4.4 for two consecutive years.
+
+7. Confidentiality:
+7.1 Distributor must keep Company information confidential during the term and for 3 years after termination.
+
+8. Compliance with Laws:
+8.1 Distributor complies with pharmaceutical laws, including FDA regulations and the Drug Supply Chain Security Act (DSCSA).
+8.2 Distributor shall report any adverse drug event to Company within 24 hours of becoming aware of it.
+
+9. Recalls:
+9.1 Company shall notify Distributor of any product recall within 24 hours.
+9.2 Company bears the cost of recalls caused by manufacturing defects.
+
+10. Warranty and Liability:
+10.1 Company warrants Products free from material defects for 180 days from shipment.
+10.2 Liability is limited to the purchase price of Products, except for liability arising from Company's negligence in manufacturing.
+
+11. Entire Agreement:
+11.1 This Agreement supersedes prior communications.
+
+12. Governing Law:
+12.1 Governed by New Jersey law.
+
+Signed,
+Aurelix Biotech Inc.
+By: Robert Hayes, CEO
+NorthStar Pharmacy Distributors LLC
+By: Maria Lopez, President
+
+Exhibit A: Products
+- Amoxicillin 500 mg capsules (bottle of 30)
+- Azithromycin 250 mg tablets (pack of 6)
+- Salbutamol inhaler 100 mcg
+- Influenza vaccine, single-dose vial (cold-chain)
+
+Exhibit B: Pricing and Terms
+- Amoxicillin 500 mg: USD 9.50 per bottle
+- Azithromycin 250 mg: USD 12.00 per pack
+- Salbutamol inhaler: USD 18.75 per inhaler
+- Influenza vaccine: USD 14.20 per vial
+- Payment: 60 days from invoice; minimum annual purchase USD 500,000
